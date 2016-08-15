@@ -1,14 +1,9 @@
-#!/bin/bash
+#!/bin/bash -l
 # tunnel script for launching remote Mathematica compute kernels.
 # See https://github.com/sakra/Tunnel/blob/master/MANUAL.md for usage hints.
 # Copyright 2015-2016 Sascha Kratky, see accompanying license file.
 
-if [ "$#" -ge 4 ];
-then
-  cd $4
-else
-  cd "`dirname \"$0\"`"
-fi
+cd "`dirname \"$0\"`"
 
 
 if [ -z "$LOGFILE" ]
@@ -32,7 +27,7 @@ then
 fi
 
 # check arguments
-if [ "$#" -lt "3" ]
+if [ "$#" -ne "3" ]
 then
 	echo "Usage: $0 [user[:password]@]host[:port] path_to_mathematica_kernel linkname" >> $LOGFILE
 	exit 1
@@ -42,9 +37,9 @@ REMOTE_KERNEL_ADDRESS=$1
 REMOTE_KERNEL_PATH=$2
 LINK_NAME=$3
 
-QSUB_PATH=/export/sge/bin/linux-x64/qsub
+QSUB_PATH=qsub
 SSH_PATH=/usr/bin/ssh
-LOAD_MATH_SCRIPT_PATH=/x2/ahassel/bin/loadmath.sh
+LOAD_MATH_SCRIPT_PATH=tunnel_qsub_loadmath.sh
 
 if [ ! -x "$SSH_PATH" ]
 then
