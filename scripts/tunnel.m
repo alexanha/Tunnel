@@ -203,6 +203,14 @@ MathLink`CreateFrontEndLink[] := Module[ {linkName, link},
 
 Protect[MathLink`CreateFrontEndLink]
 
+Options[QsubTunnel] := {Timeout->15};
+QsubTunnel[OptionsPattern[]] := Module[{timeout=OptionValue[Timeout],kernel,kid},
+  SubKernels`RemoteKernels`$RemoteCommand = "\"" <> System`$UserBaseDirectory <> "/FrontEnd/tunnel_qsub.sh\" \"`1`\" /export/pc/bin/math \"`2`\"";
+  Parallel`Settings`$MathLinkTimeout = timeout;
+  kernel = SubKernels`RemoteKernels`RemoteMachine["GridEngine", System`LinkHost -> "127.0.0.1"];
+  kid = System`LaunchKernels[kernel];
+kid]
+
 End[]
 
 EndPackage[]

@@ -1,41 +1,37 @@
 #!/bin/bash -l
-# tunnel script for launching remote Mathematica compute kernels.
-# See https://github.com/sakra/Tunnel/blob/master/MANUAL.md for usage hints.
-# Copyright 2015-2016 Sascha Kratky, see accompanying license file.
+# script that qsubs a mathematica SubKernel to the Sun Grid Engine
+# this script was largely inspired by the Tunnel-method of Sascha Kratky, c.f. https://github.com/sakra/Tunnel
+# call like: ./tunnel_qsub.sh path/to/math linkname path/to/log qsub_arguments
 
 cd "`dirname \"$0\"`"
 
+if [ -n "$3" ]
+then
+  LOG_PATH=$3
+else
+  LOG_PATH="$PWD/Logs"
+fi
 
 if [ -z "$LOGFILE" ]
 then
 	# log file with unique name for each invocation
-	mkdir -p "Logs/`date \"+%Y-%m-%d\"`"
-	LOGFILE="Logs/`date \"+%Y-%m-%d\"`/`basename \"$0\" .sh`_`date \"+%Y-%m-%d-%H%M%S\"`_$$.log"
-	# single logfile
-	# LOGFILE="`basename \"$0\" .sh`.log"
+	mkdir -p "$LOG_PATH/`date \"+%Y-%m-%d\"`"
+	LOGFILE="$LOG_PATH/`date \"+%Y-%m-%d\"`/`basename \"$0\" .sh`_`date \"+%Y-%m-%d-%H%M%S\"`_$$.log"
 fi
 
 echo `hostname` `date` >> $LOGFILE
 echo $0 $@ >> $LOGFILE
-
-# check if we are being called as SSH_ASKPASS helper script
-if [ -n "$REMOTE_KERNEL_PASSWORD" -a "$0" == "$SSH_ASKPASS" ]
-then
-	# just output the password that has been passed as an environment variable
-	echo $REMOTE_KERNEL_PASSWORD
-	exit 0
-fi
+echo "\$2=$3" >> $LOGFILE
 
 # check arguments
-if [ "$#" -ne "3" ]
+if [ "$#" -lt "2" ]
 then
 	echo "Usage: $0 [user[:password]@]host[:port] path_to_mathematica_kernel linkname" >> $LOGFILE
 	exit 1
 fi
 
-REMOTE_KERNEL_ADDRESS=$1
-REMOTE_KERNEL_PATH=$2
-LINK_NAME=$3
+REMOTE_KERNEL_PATH=$1
+LINK_NAME=$2
 
 QSUB_PATH=qsub
 SSH_PATH=/usr/bin/ssh
@@ -83,66 +79,17 @@ fi
 SSH_OPTS="-C -v -x -n -T -A -o CheckHostIP=no -o StrictHostKeyChecking=no -o ControlMaster=no -o ServerAliveInterval=20"
 
 # QSUB options
-# -q queue_spec
-QSUB_OPTS="-cwd -q *@t*"
+# - specify log dir for QSUB
+QSUB_OPTS="$QSUB_OPTS -e $LOG_PATH -o $LOG_PATH"
 
-# parse user credentials from host name
-REMOTE_KERNEL_USER=`echo $REMOTE_KERNEL_ADDRESS | awk -F "[@]" '{print $1}'`
-REMOTE_KERNEL_HOST=`echo $REMOTE_KERNEL_ADDRESS | awk -F "[@]" '{print $2}'`
-if [ -z "$REMOTE_KERNEL_HOST" ]
-then
-	REMOTE_KERNEL_HOST=$REMOTE_KERNEL_USER
-	REMOTE_KERNEL_USER=""
-fi
-
-# parse password from user credentials
-if [ -n "$REMOTE_KERNEL_USER" ]
-then
-	REMOTE_KERNEL_PASSWORD=`echo $REMOTE_KERNEL_USER | awk -F "[:]" '{print $2}'`
-	REMOTE_KERNEL_USER=`echo $REMOTE_KERNEL_USER | awk -F "[:]" '{print $1}'`
-fi
-
-# parse SSH port number from host name
-REMOTE_KERNEL_PORT=`echo $REMOTE_KERNEL_HOST | awk -F "[:]" '{print $2}'`
-REMOTE_KERNEL_HOST=`echo $REMOTE_KERNEL_HOST | awk -F "[:]" '{print $1}'`
-
-# test if REMOTE_KERNEL_PORT is a positive integer
-if echo $REMOTE_KERNEL_PORT | grep -v -q "^[0-9]*$"
-then
-	echo "Error: $REMOTE_KERNEL_PORT is not a properly formatted TCP port number!" >> $LOGFILE
-	exit 1
-fi
-
-# add optional command line options
-if [ -n "$REMOTE_KERNEL_USER" ]
-then
-	SSH_OPTS="$SSH_OPTS -l $REMOTE_KERNEL_USER"
-fi
-if [ -n "$REMOTE_KERNEL_PASSWORD" ]
-then
-	# login password cannot be specified as a command line option to SSH, use SSH_ASKPASS trick
-	export DISPLAY=none:0.0
-	export SSH_ASKPASS=$0
-	export REMOTE_KERNEL_PASSWORD
-	export LOGFILE
-fi
-if [ -n "$REMOTE_KERNEL_PORT" ]
-then
-	SSH_OPTS="$SSH_OPTS -p $REMOTE_KERNEL_PORT"
-fi
+# - append user options
+QSUB_OPTS="$QSUB_OPTS $(echo $@ | cut -d" " -f4-)"
 
 # set up remote port forwardings for kernel main link
 SSH_OPTS="$SSH_OPTS -R $LOOPBACK_IP_ADDR:$MAIN_LINK_DATA_PORT:$MAIN_LINK_HOST:$MAIN_LINK_DATA_PORT"
 SSH_OPTS="$SSH_OPTS -R $LOOPBACK_IP_ADDR:$MAIN_LINK_MESSAGE_PORT:$MAIN_LINK_HOST:$MAIN_LINK_MESSAGE_PORT"
 
-# MathLink options
-# Mathematica kernel version >= 10.0 supports -wstp switch
-if echo $REMOTE_KERNEL_PATH | grep -q "10\."
-then
-	REMOTE_KERNEL_OPTS="-wstp"
-else
-	REMOTE_KERNEL_OPTS="-mathlink"
-fi
+REMOTE_KERNEL_OPTS="-mathlink"
 REMOTE_KERNEL_OPTS="$REMOTE_KERNEL_OPTS -LinkMode Connect -LinkProtocol TCPIP -LinkName $MAIN_LINK_LOOPBACK"
 
 # Mathematica kernel options
@@ -165,11 +112,6 @@ then
 fi
 
 # log everything
-echo "REMOTE_KERNEL_ADDRESS=$REMOTE_KERNEL_ADDRESS" >> $LOGFILE
-echo "REMOTE_KERNEL_HOST=$REMOTE_KERNEL_HOST" >> $LOGFILE
-echo "REMOTE_KERNEL_USER=$REMOTE_KERNEL_USER" >> $LOGFILE
-echo "REMOTE_KERNEL_PASSWORD=$REMOTE_KERNEL_PASSWORD" >> $LOGFILE
-echo "REMOTE_KERNEL_PORT=$REMOTE_KERNEL_PORT" >> $LOGFILE
 echo "REMOTE_KERNEL_PATH=$REMOTE_KERNEL_PATH" >> $LOGFILE
 echo "REMOTE_KERNEL_OPTS=$REMOTE_KERNEL_OPTS" >> $LOGFILE
 echo "LINK_NAME=$LINK_NAME" >> $LOGFILE
@@ -183,10 +125,8 @@ echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> $LOGFILE
 echo "QSUB_PATH=$QSUB_PATH" >> $LOGFILE
 echo "QSUB_OPTS=$QSUB_OPTS" >> $LOGFILE
 echo "PWD=$PWD" >> $LOGFILE
-# launch kernel as a background process
-#"$SSH_PATH" $SSH_OPTS \
-#	$REMOTE_KERNEL_HOST \
-#	"\"$REMOTE_KERNEL_PATH\"" $REMOTE_KERNEL_OPTS \
-#	>> $LOGFILE 2>&1 &
 
-"$QSUB_PATH" $QSUB_OPTS $LOAD_MATH_SCRIPT_PATH "$(hostname -f)" $MAIN_LINK_DATA_PORT $MAIN_LINK_MESSAGE_PORT "$REMOTE_KERNEL_PATH" $REMOTE_KERNEL_OPTS >> $LOGFILE 2>&1
+# qsub the startup-script
+COMMAND="$QSUB_PATH $QSUB_OPTS $LOAD_MATH_SCRIPT_PATH $(hostname -f) $MAIN_LINK_DATA_PORT $MAIN_LINK_MESSAGE_PORT $REMOTE_KERNEL_PATH $REMOTE_KERNEL_OPTS"
+echo $COMMAND >> $LOGFILE 2>&1
+$COMMAND >> $LOGFILE 2>&1
