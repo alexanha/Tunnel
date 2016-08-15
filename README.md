@@ -3,6 +3,7 @@ Tunnel
 
 Tunnel is a set of scripts that simplify launching remote *Mathematica* kernels where all
 established MathLink connections are automatically tunneled through a secure shell connection.
+For Linux environments it also eases the submission of jobs to the Sun Grid Engine (via qsub).
 
 Features
 --------
@@ -13,6 +14,7 @@ Features
   remote kernel behind a firewall or a NAT router over the Internet.
 * Works with Windows, Linux and OS X versions of *Mathematica*.
 * Compatible with *Mathematica* versions from 8.0 to 10.4.
+* Supports launching of compute kernels via the Sun Grid Engine (from Linux only).
 
 Requirements
 ------------

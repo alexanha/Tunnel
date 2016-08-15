@@ -2,18 +2,6 @@
 
 cd "`dirname \"$0\"`"
 
-if [ "x${MATHEMATICA_BASE}x" = "xx" ]
-then
-	if [ -d /Library/Mathematica ]
-	then
-		# OS X
-		MATHEMATICA_BASE=/Library/Mathematica
-	else
-		# Linux
-		MATHEMATICA_BASE=/usr/share/Mathematica
-	fi
-fi
-
 if [ "x${MATHEMATICA_USERBASE}x" = "xx" ]
 then
 	if [ -d "$HOME/Library/Mathematica" ]
@@ -27,8 +15,8 @@ then
 fi
 
 # install kernel init file
-mkdir -v -p "${MATHEMATICA_BASE}/Kernel"
-cp -p -f -v scripts/tunnel.m "${MATHEMATICA_BASE}/Kernel"
+mkdir -v -p "${MATHEMATICA_USERBASE}/Kernel"
+cp -p -f -v scripts/tunnel.m "${MATHEMATICA_USERBASE}/Kernel"
 
 # install shell script helpers
 mkdir -v -p "${MATHEMATICA_USERBASE}/FrontEnd"
