@@ -1,0 +1,312 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     10551,        304]
+NotebookOptionsPosition[      9033,        244]
+NotebookOutlinePosition[      9415,        261]
+CellTagsIndexPosition[      9372,        258]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Automatic", "Section",
+ CellChangeTimes->{{3.680253594933579*^9, 3.680253597405581*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Needs", "[", "\"\<SubKernels`RemoteKernels`\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.680253006830409*^9, 3.6802530068306427`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Get", "[", "\"\<tunnel.m\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.680252592789415*^9, 3.6802525993423243`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"kernels", "=", 
+  RowBox[{"RemoteMachineTunnel", "[", 
+   RowBox[{"\"\<ahassel@ttp7of9.ttp.kit.edu\>\"", ",", "2", ",", 
+    RowBox[{"\"\<OperatingSystem\>\"", "\[Rule]", "\"\<Unix\>\""}], ",", 
+    RowBox[{
+    "\"\<KernelPath\>\"", "\[Rule]", "\"\</export/pc/bin/math\>\""}]}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.680253033737336*^9, 3.68025307811267*^9}}],
+
+Cell[BoxData[
+ RowBox[{"SubKernels`RemoteKernels`RemoteMachine", "[", 
+  RowBox[{"\<\"ttp7of9.ttp.kit.edu\"\>", 
+   ",", "\<\"\\\"/users/ttp/ahassel/.Mathematica/FrontEnd/tunnel_sub.sh\\\" \
+\\\"ahassel@ttp7of9.ttp.kit.edu\\\" \\\"/export/pc/bin/math\\\" \\\"`2`\\\"\"\
+\>", ",", "2", ",", 
+   RowBox[{"LinkHost", "\[Rule]", "\<\"127.0.0.1\"\>"}], ",", 
+   RowBox[{"KernelSpeed", "\[Rule]", "1"}]}], "]"}]], "Output",
+ CellChangeTimes->{3.680253047486102*^9, 3.680253080824589*^9, 
+  3.680253461266149*^9, 3.6802535075486107`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"kls", "=", 
+  RowBox[{"LaunchKernels", "[", "kernels", "]"}]}]], "Input",
+ CellChangeTimes->{{3.680253094939502*^9, 3.680253099815407*^9}, {
+  3.6802534952350397`*^9, 3.6802534958634567`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"KernelObject", "[", 
+    RowBox[{"1", ",", "\<\"ttp7of9.ttp.kit.edu\"\>"}], "]"}], ",", 
+   RowBox[{"KernelObject", "[", 
+    RowBox[{"2", ",", "\<\"ttp7of9.ttp.kit.edu\"\>"}], "]"}]}], 
+  "}"}]], "Output",
+ CellChangeTimes->{3.6802531070223846`*^9, 3.6802534637982817`*^9, 
+  3.68025350928323*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ParallelEvaluate", "[", "$MachineName", "]"}]], "Input",
+ CellChangeTimes->{{3.680253296305229*^9, 3.680253298605744*^9}, {
+  3.680253470192396*^9, 3.680253476895789*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"\<\"ttp7of9\"\>", ",", "\<\"ttp7of9\"\>"}], "}"}]], "Output",
+ CellChangeTimes->{3.680253299497444*^9, 3.6802534777382727`*^9, 
+  3.680253509334091*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CloseKernels", "[", "kls", "]"}]], "Input",
+ CellChangeTimes->{{3.680253381851605*^9, 3.680253384356517*^9}, {
+  3.680253499649338*^9, 3.6802534998955383`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"KernelObject", "[", 
+    RowBox[{
+    "1", ",", "\<\"ttp7of9.ttp.kit.edu\"\>", ",", "\<\"<defunct>\"\>"}], 
+    "]"}], ",", 
+   RowBox[{"KernelObject", "[", 
+    RowBox[{
+    "2", ",", "\<\"ttp7of9.ttp.kit.edu\"\>", ",", "\<\"<defunct>\"\>"}], 
+    "]"}]}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.680253385063568*^9, {3.680253492213071*^9, 3.680253510150391*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Manual", "Section",
+ CellChangeTimes->{{3.680253610019253*^9, 3.680253610642823*^9}}],
+
+Cell[BoxData[
+ RowBox[{"Needs", "[", "\"\<SubKernels`RemoteKernels`\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.680253651337596*^9, 3.680253651337988*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"$RemoteCommand", "=", 
+  RowBox[{
+  "\"\<\\\"\>\"", "<>", "$UserBaseDirectory", "<>", 
+   "\"\</FrontEnd/tunnel_qsub.sh\\\" \\\"`1`\\\" /export/pc/bin/math \
+\\\"`2`\\\"\>\""}]}]], "Input",
+ CellChangeTimes->{{3.68025367129674*^9, 3.680253671297282*^9}, {
+   3.680253718195365*^9, 3.6802537225302277`*^9}, {3.6802538691288223`*^9, 
+   3.68025387787148*^9}, {3.6802539651552134`*^9, 3.6802539849773273`*^9}, {
+   3.68025406364806*^9, 3.680254067440884*^9}, {3.680255342600822*^9, 
+   3.680255364730194*^9}, {3.6802559880285187`*^9, 3.680256019370866*^9}, 
+   3.680256063643174*^9, {3.680256349091066*^9, 3.6802563527375717`*^9}, {
+   3.680256435733811*^9, 3.6802564405635767`*^9}, {3.6802566994862547`*^9, 
+   3.680256703496561*^9}, {3.680262118349366*^9, 3.680262124875154*^9}, {
+   3.680264261933281*^9, 3.680264271000383*^9}, 3.6802643294712267`*^9, {
+   3.680264369965905*^9, 3.680264370524252*^9}}],
+
+Cell[BoxData["\<\"\\\"/users/ttp/ahassel/.Mathematica/FrontEnd/tunnel_qsub.sh\
+\\\" \\\"`1`\\\" /export/pc/bin/math \\\"`2`\\\"\"\>"], "Output",
+ CellChangeTimes->{
+  3.680253726218356*^9, 3.680253985872531*^9, 3.680254068851527*^9, 
+   3.6802553696669197`*^9, {3.680256013609537*^9, 3.680256022190346*^9}, 
+   3.6802560667529182`*^9, 3.6802563610607567`*^9, 3.680256442042506*^9, 
+   3.680256612808695*^9, 3.6802567045225697`*^9, 3.680262134573098*^9, 
+   3.680262611174081*^9, {3.680264310467927*^9, 3.680264330024577*^9}, 
+   3.6802644141529493`*^9, 3.680264683376816*^9, 3.6802650530724792`*^9, 
+   3.6802652857300663`*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Parallel`Settings`$MathLinkTimeout", "=", "30"}], ";"}]], "Input",
+ CellChangeTimes->{{3.680253759390402*^9, 3.680253759390849*^9}, {
+  3.6802552487742434`*^9, 3.680255248981903*^9}, {3.680263340637311*^9, 
+  3.680263340739753*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"kernel", "=", 
+  RowBox[{"RemoteMachine", "[", 
+   RowBox[{"\"\<GridEngine\>\"", ",", 
+    RowBox[{"LinkHost", "\[Rule]", "\"\<127.0.0.1\>\""}]}], "]"}]}]], "Input",\
+
+ CellChangeTimes->{{3.680253796478931*^9, 3.680253807161159*^9}, {
+  3.6802559785948*^9, 3.6802559800357437`*^9}, {3.680256147805731*^9, 
+  3.680256153620452*^9}, {3.68026503500825*^9, 3.680265050150387*^9}}],
+
+Cell[BoxData[
+ InterpretationBox["\<\"\[LeftSkeleton]a kernel on GridEngine\[RightSkeleton]\
+\"\>",
+  StringForm["\[LeftSkeleton]a kernel on `1`\[RightSkeleton]", "GridEngine"],
+  Editable->False]], "Output",
+ CellChangeTimes->{
+  3.680253810658226*^9, {3.680253995200741*^9, 3.680254014148831*^9}, {
+   3.680254078335146*^9, 3.680254104611227*^9}, 3.680254221510305*^9, 
+   3.6802553736852493`*^9, 3.680256026183242*^9, 3.6802560762052717`*^9, 
+   3.680256155023327*^9, 3.680256371330303*^9, 3.680256444026909*^9, 
+   3.6802566149761143`*^9, 3.680256705653064*^9, 3.680262141535493*^9, 
+   3.680263343175405*^9, 3.6802644183313007`*^9, 3.680265055297626*^9, 
+   3.680265287564917*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ks", "=", 
+  RowBox[{"LaunchKernels", "[", "kernel", "]"}]}]], "Input",
+ CellChangeTimes->{{3.6802538177763567`*^9, 3.6802538177766743`*^9}, {
+  3.680254002007307*^9, 3.680254002734767*^9}, {3.680256706185636*^9, 
+  3.680256706797495*^9}}],
+
+Cell[BoxData[
+ RowBox[{"\<\"KernelObject\"\>", "[", 
+  RowBox[{"1", ",", "\<\"GridEngine\"\>"}], "]"}]], "Output",
+ CellChangeTimes->{
+  3.6802538327412863`*^9, 3.6802540310583763`*^9, 3.680254095264398*^9, 
+   3.680254138611182*^9, 3.680254252800797*^9, 3.68025503960398*^9, {
+   3.6802552459149437`*^9, 3.6802552706739073`*^9}, 3.6802553927724857`*^9, 
+   3.6802560436795*^9, 3.680256092398209*^9, 3.6802561710046263`*^9, 
+   3.6802562287247257`*^9, 3.6802563876092463`*^9, 3.680256460003652*^9, 
+   3.680256630928068*^9, 3.680256722301393*^9, 3.6802568314617033`*^9, 
+   3.680256983150146*^9, 3.680262158250454*^9, 3.680262628357017*^9, 
+   3.6802626843292294`*^9, 3.680262775335187*^9, 3.680262863392631*^9, 
+   3.6802629969374933`*^9, 3.680263347245516*^9, 3.680264426774375*^9, 
+   3.680264691959558*^9, 3.6802650621139603`*^9, 3.680265291730706*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"ParallelEvaluate", "[", "$MachineName", "]"}]], "Input",
+ CellChangeTimes->{{3.6802633040306683`*^9, 3.680263325031899*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", "\<\"t11\"\>", "}"}]], "Output",
+ CellChangeTimes->{{3.680263320626375*^9, 3.680263350255413*^9}, 
+   3.680264429304214*^9, 3.680264705304538*^9, 3.680265064085919*^9, 
+   3.6802652931131783`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"CloseKernels", "[", "ks", "]"}]], "Input",
+ CellChangeTimes->{{3.680253849793682*^9, 3.680253852404838*^9}, {
+  3.6802540061817007`*^9, 3.6802540062810373`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"\<\"KernelObject\"\>", "[", 
+  RowBox[{"1", ",", "\<\"GridEngine\"\>", ",", "\<\"<defunct>\"\>"}], 
+  "]"}]], "Output",
+ CellChangeTimes->{
+  3.6802538528102503`*^9, {3.680263334573243*^9, 3.6802633547267227`*^9}, 
+   3.680264431322866*^9, 3.680264707007771*^9, 3.680265065789706*^9, 
+   3.680265294529682*^9}]
+}, Open  ]]
+}, Open  ]]
+},
+WindowToolbars->"EditBar",
+WindowSize->{1920, 1030},
+WindowMargins->{{0, Automatic}, {0, Automatic}},
+ShowSelection->True,
+FrontEndVersion->"11.0 for Linux x86 (64-bit) (July 28, 2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 94, 1, 65, "Section"],
+Cell[676, 25, 158, 2, 35, "Input"],
+Cell[837, 29, 139, 2, 32, "Input"],
+Cell[CellGroupData[{
+Cell[1001, 35, 391, 8, 32, "Input"],
+Cell[1395, 45, 530, 9, 32, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1962, 59, 216, 4, 32, "Input"],
+Cell[2181, 65, 350, 9, 32, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2568, 79, 195, 3, 32, "Input"],
+Cell[2766, 84, 192, 4, 32, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2995, 93, 184, 3, 32, "Input"],
+Cell[3182, 98, 418, 12, 32, "Output"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3649, 116, 91, 1, 65, "Section"],
+Cell[3743, 119, 156, 2, 35, "Input"],
+Cell[CellGroupData[{
+Cell[3924, 125, 926, 15, 33, "Input"],
+Cell[4853, 142, 627, 9, 32, "Output"]
+}, Open  ]],
+Cell[5495, 154, 267, 5, 32, "Input"],
+Cell[CellGroupData[{
+Cell[5787, 163, 400, 8, 32, "Input"],
+Cell[6190, 173, 685, 12, 32, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6912, 190, 263, 5, 32, "Input"],
+Cell[7178, 197, 856, 13, 32, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8071, 215, 148, 2, 32, "Input"],
+Cell[8222, 219, 224, 4, 32, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8483, 228, 185, 3, 32, "Input"],
+Cell[8671, 233, 334, 7, 32, "Output"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
